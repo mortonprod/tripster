@@ -52,9 +52,6 @@ document.onreadystatechange = () => {
       iFrame.style= `padding: 0px; margin: 0px; border:0px; top:${offset.top}px; left:${offset.left}px; width: ${size.width}px; height:${size.height}px; z-index:1000; position: absolute`
       count++;
     }
-    chrome.runtime.sendMessage(image_information, (temp) => {
-      console.log(temp);
-    })
   }
   // Need this or we resize repeatedly
   var doit;
@@ -70,4 +67,20 @@ document.onreadystatechange = () => {
       }
     }
   };
+
+  //TODO: Make this more generic than a single frame
+  function checkIframeLoaded() {
+    var iframe = document.getElementById('0');
+    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    if (  iframeDoc.readyState  == 'complete' ) {
+        chrome.runtime.sendMessage(image_information, (temp) => {
+          console.log(temp);
+        })
+        return;
+    } 
+
+    // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
+    window.setTimeout(checkIframeLoaded, 100);
+  }
+  checkIframeLoaded();
 }

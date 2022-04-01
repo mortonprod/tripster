@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(
     console.log(request);
     console.log(sender);
     console.log(sender.tab.id);
-    chrome.tabs.sendMessage(sender.tab.id, `Again ${request}`);
+    chrome.tabs.sendMessage(sender.tab.id, request);
     sendResponse("bar");
   }
 );

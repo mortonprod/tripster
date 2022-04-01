@@ -25,8 +25,8 @@ document.onreadystatechange = () => {
     // console.log(offset);
     // console.log(size);
     image_information.push({
-      offset,
-      size
+      srcset: currentImg.srcset,
+      src: currentImg.src
     })
     // var newDiv = document.createElement("div");
     var newIframe = document.createElement("iframe");
@@ -40,16 +40,11 @@ document.onreadystatechange = () => {
   }
   resizedw = () => {
     count = 0;
-    image_information = []
     for (const currentImg of currentImgs) {
       var offset = getOffset(currentImg)
       var size = getSize(currentImg)
       // console.log(offset);
       // console.log(size);
-      image_information.push({
-        offset,
-        size
-      })
       // console.log(count);
       var iFrame = document.getElementById(`${count}`);
       // console.log(`iFrame blah: ${iFrame}`);

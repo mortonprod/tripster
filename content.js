@@ -69,18 +69,28 @@ document.onreadystatechange = () => {
   };
 
   //TODO: Make this more generic than a single frame
-  function checkIframeLoaded() {
-    var iframe = document.getElementById('0');
-    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    if (  iframeDoc.readyState  == 'complete' ) {
-        chrome.runtime.sendMessage(image_information, (temp) => {
-          console.log(temp);
-        })
-        return;
-    } 
+  // Also need to upgrade from simple timeout because below DOES NOT WORK!
+  // function checkIframeLoaded() {
+  //   var iframe = document.getElementById('0');
+  //   var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+  //   if (  iframeDoc.readyState  == 'complete' ) {
+  //       console.log('Send img info');
+  //       iframe.contentWindow.onload = function(){
+  //         chrome.runtime.sendMessage(image_information, (temp) => {
+  //           console.log(temp);
+  //         })
+  //       }
+  //       return;
+  //   } 
 
-    // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
-    window.setTimeout(checkIframeLoaded, 100);
-  }
-  checkIframeLoaded();
+  //   // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
+  //   window.setTimeout(checkIframeLoaded, 100);
+  // }
+  // checkIframeLoaded();
+
+  window.setTimeout(() => {
+    chrome.runtime.sendMessage(image_information, (temp) => {
+      console.log(temp);
+    })
+  }, 5000);
 }

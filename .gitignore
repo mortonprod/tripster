@@ -1,0 +1,4 @@
+static/iframe.js
+static/iframe.wasm
+dist
+node_modules

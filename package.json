@@ -1,7 +1,7 @@
 {
-  "name": "chrome-extension-webpack",
-  "version": "0.2.0",
-  "description": "Get started with Chrome extensions development using webpack, Typescript, Sass, and more",
+  "name": "Tripster",
+  "version": "0.0.1",
+  "description": "This is a chrome extension to manipulate website images",
   "scripts": {
     "start": "webpack --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",

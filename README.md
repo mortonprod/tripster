@@ -4,7 +4,8 @@ emcc --pre-js src/pre.js -o static/iframe.js src/hello/hello.c
 
 # Issues
 
-How do we get images in the iframe context when it will not have the access rights to get to that webpage? No access to cookies or JWT
+* How do we get images in the iframe context when it will not have the access rights to get to that webpage? No access to cookies or JWT
+* Will need to update to manifest version 3 by the end of the year but can't now since can't run wasm in extension with this.
 
 # Reference
 

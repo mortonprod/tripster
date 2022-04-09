@@ -1,22 +1,8 @@
+import { getOffset, getSize  } from "./utils";
 console.log("Content is up and running");
 
-function getOffset (el) {
-  const rect = el.getBoundingClientRect();
-  return {
-    left: rect.left + window.scrollX,
-    top: rect.top + window.scrollY
-  };
-}
-
-function getSize (el) {
-  return {
-    width: el.offsetWidth,
-    height: el.offsetHeight
-  };
-}
-
 document.onreadystatechange = () => {
-  image_information = []
+  const image_information = []
   const currentImgs = document.getElementsByTagName("img");
   let count = 0;
   for (const currentImg of currentImgs) {
@@ -26,7 +12,9 @@ document.onreadystatechange = () => {
     // console.log(size);
     image_information.push({
       srcset: currentImg.srcset,
-      src: currentImg.src
+      src: currentImg.src,
+      size,
+      offset
     })
     // let newDiv = document.createElement("div");
     const newIframe = document.createElement("iframe");

@@ -1,4 +1,4 @@
-import { getOffset, getSize  } from "./utils";
+import { getOffset, getSize  } from "./contentUtils";
 console.log("Content is up and running");
 
 document.onreadystatechange = () => {

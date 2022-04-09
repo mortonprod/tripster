@@ -1,44 +1,25 @@
-import { getOffset, getSize  } from "./contentUtils";
+import { getInfoImgs  } from "./contentUtils";
 console.log("Content is up and running");
 
 document.onreadystatechange = () => {
-  const image_information = []
-  const currentImgs = document.getElementsByTagName("img");
-  let count = 0;
-  for (const currentImg of currentImgs) {
-    const offset = getOffset(currentImg)
-    const size = getSize(currentImg)
-    // console.log(offset);
-    // console.log(size);
-    image_information.push({
-      srcset: currentImg.srcset,
-      src: currentImg.src,
-      size,
-      offset
-    })
+  const imgs = getInfoImgs();
+  for (const [key,value] of imgs.entries()) {
     // let newDiv = document.createElement("div");
     const newIframe = document.createElement("iframe");
     newIframe.src = chrome.runtime.getURL("iframe.html");
-    newIframe.id = count;
+    newIframe.id = key;
     // newDiv.style.cssText = `top:${offset.top}px; left:${offset.left}px; width: ${size.width}px; height:${size.height}px; z-index:1000; position: absolute`
-    newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:${offset.top}px; left:${offset.left}px; width: ${size.width}px; height:${size.height}px; z-index:1000; position: absolute`
+    newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:1000; position: absolute`
     // newDiv.appendChild(newIframe);
     document.body.appendChild(newIframe)
-    count++;
   }
-  resizedw = () => {
-    count = 0;
-    for (const currentImg of currentImgs) {
-      const offset = getOffset(currentImg)
-      const size = getSize(currentImg)
-      // console.log(offset);
-      // console.log(size);
-      // console.log(count);
-      const iFrame = document.getElementById(`${count}`);
+  const resizedw = () => {
+    const imgs = getInfoImgs();
+    for (const [key,value] of imgs.entries()) {
+      const iFrame = document.getElementById(key);
       // console.log(`iFrame blah: ${iFrame}`);
       // iFrame.style.width = "100px";
-      iFrame.style= `padding: 0px; margin: 0px; border:0px; top:${offset.top}px; left:${offset.left}px; width: ${size.width}px; height:${size.height}px; z-index:1000; position: absolute`
-      count++;
+      iFrame.style= `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:1000; position: absolute`
     }
   }
   // Need this or we resize repeatedly

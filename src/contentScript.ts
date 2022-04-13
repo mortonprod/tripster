@@ -6,7 +6,7 @@ document.onreadystatechange = () => {
   for (const [key,value] of imgs.entries()) {
     // let newDiv = document.createElement("div");
     const newIframe = document.createElement("iframe");
-    newIframe.src = chrome.runtime.getURL("iframe.html");
+    newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
     newIframe.id = key;
     // newDiv.style.cssText = `top:${offset.top}px; left:${offset.left}px; width: ${size.width}px; height:${size.height}px; z-index:1000; position: absolute`
     newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:1000; position: absolute`

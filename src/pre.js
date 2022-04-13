@@ -5,16 +5,30 @@ chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         console.log(request)
         console.log('Start breaking images into parts...')
-        for(const [key,value] of new Map(Object.entries(request))) {
-            img.src = "https://alexandermorton.co.uk/68cb5bcc4e0025874fdb34456d66d09f.jpg";
-            img.onload = () => {
-                // console.log(`offset: ${canvas.offsetWidth}`);
-                // ctx.drawImage(img, 0, 0);
-                ctx.drawImage(img, 0, 0, 100, 100 * img.height / img.width)
-                // const imageData = ctx.getImageData(0, 0, canvas.offsetWidth, 100);
-                // ctx.putImageData(imageData, 0, 0)
-            }
+        console.log(`iframe id: ${window.location.search.substring(1).split('=')[1]}`);
+        let map = new Map(Object.entries(request));
+        let info = map.get(window.location.search.substring(1).split('=')[1]);
+        console.log(`Info ${JSON.stringify(info)}`);
+        img.src = "https://alexandermorton.co.uk/68cb5bcc4e0025874fdb34456d66d09f.jpg";
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
         }
+        // for(const [key,value] of new Map(Object.entries(request))) {
+        //     console.log(`Before ${img.width} and ${img.height}`);
+        //     img.src = "https://alexandermorton.co.uk/68cb5bcc4e0025874fdb34456d66d09f.jpg";
+        //     // img.width = value.size.width*0.1
+        //     // img.height = value.size.height*0.1
+        //     img.onload = () => {
+        //         console.log(`${img.width} and ${img.height}`);
+        //         // img.width = value.size.width
+        //         // img.height = value.size.height
+        //         // console.log(`offset: ${canvas.offsetWidth}`);
+        //         ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, value.size.width, value.size.height);
+        //         // ctx.drawImage(img, 0, 0)
+        //         // const imageData = ctx.getImageData(0, 0, canvas.offsetWidth, 100);
+        //         // ctx.putImageData(imageData, 0, 0)
+        //     }
+        // }
     }
 );
 

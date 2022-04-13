@@ -13,22 +13,6 @@ chrome.runtime.onMessage.addListener(
         img.onload = () => {
             ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
         }
-        // for(const [key,value] of new Map(Object.entries(request))) {
-        //     console.log(`Before ${img.width} and ${img.height}`);
-        //     img.src = "https://alexandermorton.co.uk/68cb5bcc4e0025874fdb34456d66d09f.jpg";
-        //     // img.width = value.size.width*0.1
-        //     // img.height = value.size.height*0.1
-        //     img.onload = () => {
-        //         console.log(`${img.width} and ${img.height}`);
-        //         // img.width = value.size.width
-        //         // img.height = value.size.height
-        //         // console.log(`offset: ${canvas.offsetWidth}`);
-        //         ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, value.size.width, value.size.height);
-        //         // ctx.drawImage(img, 0, 0)
-        //         // const imageData = ctx.getImageData(0, 0, canvas.offsetWidth, 100);
-        //         // ctx.putImageData(imageData, 0, 0)
-        //     }
-        // }
     }
 );
 

@@ -22,9 +22,9 @@ document.onreadystatechange = () => {
       iFrame.style= `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:1000; position: absolute`
     }
     console.log(`inside resize ${imgs}`);
-    chrome.runtime.sendMessage(Object.fromEntries(imgs), (temp) => {
-      console.log(temp);
-    })
+    // chrome.runtime.sendMessage(Object.fromEntries(imgs), (temp) => {
+    //   console.log(temp);
+    // })
   }
   // Need this or we resize repeatedly
   let doit;
@@ -33,12 +33,12 @@ document.onreadystatechange = () => {
     doit = setTimeout(resizedw, 100);
   };
     // Need this or we scroll repeatedly
-  let doitscroll;
-  window.onscroll = function () {
-    console.log('scroll');
-    clearTimeout(doitscroll);
-    doit = setTimeout(resizedw, 100);
-  };
+  // let doitscroll;
+  // window.onscroll = function () {
+  //   console.log('scroll');
+  //   clearTimeout(doitscroll);
+  //   doit = setTimeout(resizedw, 100);
+  // };
   // TODO: Need to wait some time to ensure the iframes have been created
   window.setTimeout(() => {
     console.log(`inside timeout ${imgs}`);

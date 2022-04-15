@@ -23,20 +23,6 @@ function getSize (el: HTMLElement): ISize {
   };
 }
 
-function getInfoImgs(): Map<string,{srcset: string, src: string, size:ISize, offset:IOffset}>  {
-  const image_information = new Map();
-  const currentImgs = document.getElementsByTagName("img");
-  for (const currentImg of currentImgs) {
-    image_information.set(`${currentImg.className}-${currentImg.id}-${currentImg.src}`,{
-      srcset: currentImg.srcset,
-      src: currentImg.src,
-      size: getSize(currentImg),
-      offset: getOffset(currentImg)
-    })
-  }
-  return image_information
-}
-
 function isInViewport(element: HTMLElement) {
   const rect = element.getBoundingClientRect();
   return (
@@ -64,22 +50,6 @@ function getVisibleImgs () {
   return image_information
 }
 
-function injectIFrames() {
-  const currentImgs = document.getElementsByTagName("img");
-  for (const currentImg of currentImgs) {
-    console.log(`Create iframe ${currentImg.cssText} ${currentImg.width} ${currentImg.height}`);
-    const newIframe = document.createElement("iframe");
-    newIframe.src = chrome.runtime.getURL(`iframe.html?id=test`);
-    newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:0px; left:0px; width: 100%; height:100%; z-index:1000; position: relative`
-    // newIframe.style.cssText = currentImg.cssText;
-    // newIframe.style.width = currentImg.width;
-    // newIframe.style.height = currentImg.height;
-    // newIframe.className = currentImg.className;
-    // currentImg.style.display = "none"
-    currentImg.parentElement.appendChild(newIframe)
-  }
-}
-
 function dumpCSSText(element: HTMLElement){
   let s = '';
   const o = getComputedStyle(element);
@@ -98,32 +68,13 @@ function createIFrames() {
       newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
       newIframe.id = key;
       newIframe.style.cssText = dumpCSSText(value.currentImg);
-      // newIframe.style.width = value.currentImg.width;
-      // newIframe.style.height = value.currentImg.height;
-      // newIframe.className = value.currentImg.className;
       value.currentImg.style.display = "none"
       value.currentImg.parentElement.prepend(newIframe)
-      // document.body.prepend(newIframe)
       created.push(key);
-    }
-  }
-}
-
-function resizeIFrames () {
-  const imgs = getInfoImgs();
-  for (const [key,value] of imgs.entries()) {
-    if(created.includes(key)) {
-      console.log(`Resize iframe for image: ${key}`);
-      const iFrame = document.getElementById(key);
-      iFrame.style= `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:1000; position: absolute`
     }
   }
 }
 
 export function scroll () {
   createIFrames();
-}
-
-export function resize () {
-  resizeIFrames();
 }

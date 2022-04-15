@@ -98,25 +98,10 @@ function createIFrames() {
       newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
       newIframe.id = key;
       newIframe.style.cssText = dumpCSSText(value.currentImg);
-      newIframe.style.width = value.currentImg.width;
-      newIframe.style.height = value.currentImg.height;
-      newIframe.className = value.currentImg.className;
+      // newIframe.style.width = value.currentImg.width;
+      // newIframe.style.height = value.currentImg.height;
+      // newIframe.className = value.currentImg.className;
       value.currentImg.style.display = "none"
-      // newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:100; position: absolute`
-      // newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:0px; left:0px; width: ${value.size.width}px; height:${value.size.height}px;` 
-      // newIframe.style.position = value.currentImg.style.position
-      // value.currentImg.style.visibility = "hidden"
-      // newIframe.style.display = "none"
-      // value.currentImg.style.display = "none"
-      // value.currentImg.parentElement.style.zIndex = '0'
-      // const spans = value.currentImg.parentElement.getElementsByTagName('span');
-      // for(const span of spans) {
-      //   span.style.zIndex = '200'
-      // }
-      // const divs = value.currentImg.parentElement.getElementsByTagName('div');
-      // for(const div of divs) {
-      //   div.style.zIndex = '200'
-      // }
       value.currentImg.parentElement.prepend(newIframe)
       // document.body.prepend(newIframe)
       created.push(key);

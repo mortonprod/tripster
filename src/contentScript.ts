@@ -3,11 +3,11 @@ console.log("Content is up and running");
 
 document.onreadystatechange = () => {
   // Need this or we resize repeatedly
-  let doresize: any;
-  window.onresize = function () {
-    clearTimeout(doresize);
-    doresize = setTimeout(resize, 500);
-  };
+  // let doresize: any;
+  // window.onresize = function () {
+  //   clearTimeout(doresize);
+  //   doresize = setTimeout(resize, 500);
+  // };
   // Scroll at the very start to we create the visible iframes
   scroll();
   // Need this or we scroll repeatedly

@@ -56,14 +56,40 @@ function getVisibleImgs () {
         srcset: currentImg.srcset,
         src: currentImg.src,
         size: getSize(currentImg),
-        offset: getOffset(currentImg)
+        offset: getOffset(currentImg),
+        currentImg
       })
     }
   }
   return image_information
 }
+
+function injectIFrames() {
+  const currentImgs = document.getElementsByTagName("img");
+  for (const currentImg of currentImgs) {
+    console.log(`Create iframe ${currentImg.cssText} ${currentImg.width} ${currentImg.height}`);
+    const newIframe = document.createElement("iframe");
+    newIframe.src = chrome.runtime.getURL(`iframe.html?id=test`);
+    newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:0px; left:0px; width: 100%; height:100%; z-index:1000; position: relative`
+    // newIframe.style.cssText = currentImg.cssText;
+    // newIframe.style.width = currentImg.width;
+    // newIframe.style.height = currentImg.height;
+    // newIframe.className = currentImg.className;
+    // currentImg.style.display = "none"
+    currentImg.parentElement.appendChild(newIframe)
+  }
+}
+
+function dumpCSSText(element: HTMLElement){
+  let s = '';
+  const o = getComputedStyle(element);
+  for(let i = 0; i < o.length; i++){
+    s+=o[i] + ':' + o.getPropertyValue(o[i])+';';
+  }
+  return s;
+}
 const created: Array<string> = []
-function createIFrames () {
+function createIFrames() {
   const imgs = getVisibleImgs();
   for (const [key,value] of imgs.entries()) {
     if(!created.includes(key)) {
@@ -71,8 +97,28 @@ function createIFrames () {
       const newIframe = document.createElement("iframe");
       newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
       newIframe.id = key;
-      newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:1000; position: absolute`
-      document.body.appendChild(newIframe)
+      newIframe.style.cssText = dumpCSSText(value.currentImg);
+      newIframe.style.width = value.currentImg.width;
+      newIframe.style.height = value.currentImg.height;
+      newIframe.className = value.currentImg.className;
+      value.currentImg.style.display = "none"
+      // newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:${value.offset.top}px; left:${value.offset.left}px; width: ${value.size.width}px; height:${value.size.height}px; z-index:100; position: absolute`
+      // newIframe.style.cssText = `padding: 0px; margin: 0px; border:0px; top:0px; left:0px; width: ${value.size.width}px; height:${value.size.height}px;` 
+      // newIframe.style.position = value.currentImg.style.position
+      // value.currentImg.style.visibility = "hidden"
+      // newIframe.style.display = "none"
+      // value.currentImg.style.display = "none"
+      // value.currentImg.parentElement.style.zIndex = '0'
+      // const spans = value.currentImg.parentElement.getElementsByTagName('span');
+      // for(const span of spans) {
+      //   span.style.zIndex = '200'
+      // }
+      // const divs = value.currentImg.parentElement.getElementsByTagName('div');
+      // for(const div of divs) {
+      //   div.style.zIndex = '200'
+      // }
+      value.currentImg.parentElement.prepend(newIframe)
+      // document.body.prepend(newIframe)
       created.push(key);
     }
   }

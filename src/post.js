@@ -1,9 +1,17 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const img = new Image();
+
+var blackStrips = Module.cwrap("blackStrips", null, ["number", "number", "number"]);
+
 img.src = "https://alexandermorton.co.uk/68cb5bcc4e0025874fdb34456d66d09f.jpg";
+img.crossOrigin = "anonymous";
 img.onload = () => {
     ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    var input_ptr = Module._malloc(canvas.width * canvas.height * 4);
+    Module.HEAPU8.set(imageData.data, input_ptr);
+    blackStrips(input_ptr,canvas.width,canvas.height);
 }
 
 var js_wrapped_fib = Module.cwrap("fib", "number", ["number"]);

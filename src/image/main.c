@@ -13,3 +13,7 @@ void EMSCRIPTEN_KEEPALIVE addOne(int* input_ptr, int* output_ptr, int len){
 	for(i = 0; i < len; i++)
     	output_ptr[i] = input_ptr[i] + 1;
 }
+
+void EMSCRIPTEN_KEEPALIVE blackStrips(int* input_ptr, int width, int height){
+  printf("Width %d, height: %d", width, height);
+}

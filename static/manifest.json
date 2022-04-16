@@ -22,6 +22,9 @@
       "iframe.html"
     ]
   },
+  "content_security_policy": {
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self'; img-src *"
+  },
   "web_accessible_resources": [
     {
       "resources": ["iframe.html"],

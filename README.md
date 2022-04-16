@@ -1,6 +1,12 @@
 # Running
 
+## Hello World
+
 emcc --pre-js src/pre.js -o static/iframe.js src/hello/hello.c
+
+## Image Manipulation
+
+emcc --post-js src/post.js -o static/iframe.js src/image/main.c -s WASM=1 -s EXPORTED_RUNTIME_METHODS='["cwrap"]'
 
 # Issues
 
@@ -18,3 +24,4 @@ https://blog.tensorflow.org/2020/09/bringing-mona-lisa-effect-to-life-tensorflow
 https://surma.dev/things/c-to-webassembly
 https://github.com/sszczep/chrome-extension-webpack
 https://stackoverflow.com/questions/69321549/webassembly-inside-chrome-extension-in-sandbox-with-manifest-v3
+https://marcoselvatici.github.io/WASM_tutorial/

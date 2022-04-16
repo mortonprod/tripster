@@ -7,3 +7,7 @@ int EMSCRIPTEN_KEEPALIVE fib(int n){
     else
         return fib(n - 1) + fib(n - 2);
 }
+
+void EMSCRIPTEN_KEEPALIVE addOne(int* input_ptr, int* output_ptr){
+	*output_ptr = (*input_ptr) + 1;
+}

@@ -8,6 +8,8 @@ int EMSCRIPTEN_KEEPALIVE fib(int n){
         return fib(n - 1) + fib(n - 2);
 }
 
-void EMSCRIPTEN_KEEPALIVE addOne(int* input_ptr, int* output_ptr){
-	*output_ptr = (*input_ptr) + 1;
+void EMSCRIPTEN_KEEPALIVE addOne(int* input_ptr, int* output_ptr, int len){
+	int i;
+	for(i = 0; i < len; i++)
+    	output_ptr[i] = input_ptr[i] + 1;
 }

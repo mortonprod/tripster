@@ -6,7 +6,7 @@ emcc --pre-js src/pre.js -o static/iframe.js src/hello/hello.c
 
 ## Image Manipulation
 
-emcc --post-js src/post.js -o static/iframe.js src/image/main.c -s WASM=1 -s EXPORTED_FUNCTIONS='["_fib", "_addOne", "_malloc", "_free"]' -s EXPORTED_RUNTIME_METHODS='["cwrap", "getValue", "setValue"]'
+emcc --post-js src/post.js -o static/iframe.js src/image/main.c -s WASM=1 -s EXPORTED_FUNCTIONS='["_fib", "_addOne", "_malloc", "_free"]' -s EXPORTED_RUNTIME_METHODS='["cwrap", "getValue", "setValue"]' -s ALLOW_MEMORY_GROWTH
 
 # Issues
 
@@ -25,3 +25,4 @@ https://surma.dev/things/c-to-webassembly
 https://github.com/sszczep/chrome-extension-webpack
 https://stackoverflow.com/questions/69321549/webassembly-inside-chrome-extension-in-sandbox-with-manifest-v3
 https://marcoselvatici.github.io/WASM_tutorial/
+https://compile.fi/canvas-filled-three-ways-js-webassembly-and-webgl/

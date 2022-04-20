@@ -95,11 +95,11 @@ void EMSCRIPTEN_KEEPALIVE render(double timestamp) {
 void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
   int scaledTimestamp = floor(timestamp / 10.0 + 2000.0);
   // printf("Time: %d \n",scaledTimestamp);
-  for (int y = 0; y < height-100; y++) {
+  for (int y = 0; y < height; y++) {
     int dy = ch - y;
     int dysq = dy * dy;
     int yw = y * width;
-    for (int x = 0; x < width-100; x++) {
+    for (int x = 0; x < width; x++) {
       int dx = cw - x;
       int dxsq = dx * dx;
       double angle = customAtan2(dx, dy) / RAD;
@@ -116,12 +116,12 @@ void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
       int fadeG = round(120.0 * lerp * lerp * lerp * absoluteDistanceRatioGB);
       // data[yw + x] = red;
       // printf("Data: %d %d %d \n",fadeB,fadeG,fadeR);
-      // data[yw + x] =
-      //   (255 << 24) |   // A
-      //   (fadeB << 16) | // B
-      //   (fadeG << 8) |  // G
-      //   fadeR;          // R
-      data[yw + x] = data[yw + x] + (255 << 24);
+      data[yw + x] = data[yw + x] +
+        (255 << 24) |   // A
+        (fadeB << 16) | // B
+        (fadeG << 8) |  // G
+        fadeR;          // R
+      // data[yw + x] = data[yw + x] + (255 << 24);
       // printf("Data: %d \n",data[yw+x]);
     }
   }

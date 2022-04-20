@@ -80,13 +80,13 @@ void EMSCRIPTEN_KEEPALIVE render(double timestamp) {
       int fadeB = round(50.0 * lerp * absoluteDistanceRatioGB);
       int fadeR = round(240.0 * lerp * absoluteDistanceRatioR * (1.0 + lerp) / 2.0);
       int fadeG = round(120.0 * lerp * lerp * lerp * absoluteDistanceRatioGB);
-      data[yw + x] = red;
+      // data[yw + x] = red;
       // printf("Data: %d %d %d \n",fadeB,fadeG,fadeR);
-      // data[yw + x] =
-      //   (255 << 24) |   // A
-      //   (fadeB << 16) | // B
-      //   (fadeG << 8) |  // G
-      //   fadeR;          // R
+      data[yw + x] =
+        (255 << 24) |   // A
+        (fadeB << 16) | // B
+        (fadeG << 8) |  // G
+        fadeR;          // R
       // printf("Data: %d \n",data[yw+x]);
     }
   }

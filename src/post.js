@@ -9,21 +9,14 @@ const ctx = canvas.getContext('2d',  {
 
 Module['onRuntimeInitialized'] = () => {
 	console.log(`Initial width ${canvas.width} ${canvas.height}`);
-	// var _init = Module.cwrap("init", "number", ["number", "number"]);
-	// var _render = Module.cwrap("render", null, ["number"]);
-	// var pointer = _init(canvas.width, canvas.height);
+	var _init = Module.cwrap("init", "number", ["number", "number"]);
+	var _render = Module.cwrap("render", null, ["number"]);
+	var pointer = _init(canvas.width, canvas.height);
 	var pointer = Module._init(canvas.width, canvas.height);
-	console.log(`Pointer: ${pointer}`);
-	var memSize = 256;
-	var memory = new WebAssembly.Memory({ initial: memSize, maximum: memSize });
-	var data = new Uint8ClampedArray(memory.buffer, pointer, canvas.width * canvas.height * 4);
+	var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
 	var img = new ImageData(data, canvas.width, canvas.height);
 	var render = (timestamp) => {
-		// for(let el of data) {
-		// 	console.log(`Data blah: ${timestamp} --- ${el}`);
-		// }
-		// console.log(`Array: ${data}`)
-		Module._render(timestamp);
+		_render(timestamp);
 		ctx.putImageData(img, 0, 0);
 		window.requestAnimationFrame(render);
 	};

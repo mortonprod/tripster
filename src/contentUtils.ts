@@ -58,10 +58,46 @@ function dumpCSSText(element: HTMLElement){
   }
   return s;
 }
+
+function messageIFrames(iframe) {
+  const _window = iframe.contentWindow
+  window.addEventListener("message", function(e) {
+      console.log(`MESSAGE ${e.origin} --- ${e.data} --- ${iframe.src} --- ${iframe.src.split("/").splice(0, 3).join("/")}`);
+      // wait for child to signal that it's loaded.
+      if ( e.data === "loaded") {
+          console.log('SEND MESSAGE');
+          // send the child a message.
+          _window.postMessage("Test BOOM", "*")
+      }
+  })
+}
+
+function callIFrames(iframes) {
+  console.log(`DOM loaded????  --- ${document.readyState}`);
+  if( document.readyState !== 'loading' ) {
+    console.log('DOM should be loaded');
+    window.addEventListener("DOMContentLoaded", function() {
+      console.log('DOM loaded');
+      for(const iframe of iframes) {
+        messageIFrames(iframe);
+      }
+    }, false)
+  } else {
+    console.log('DOM loaded before');
+    for(const iframe of iframes) {
+      messageIFrames(iframe);
+    }
+  }
+  for(const iframe of iframes) {
+    messageIFrames(iframe);
+  }
+}
+
 let created: Array<string> = []
 // const created_to_display = new Map();
 function createIFrames() {
   const imgs = getVisibleImgs();
+  const iframes = [];
   for (const [key,value] of imgs.entries()) {
     if(!created.includes(key)) {
       console.log(`Create iframe for image: ${key}`);
@@ -75,8 +111,10 @@ function createIFrames() {
       value.currentImg.style.display = "none"
       value.currentImg.parentElement.prepend(newIframe)
       created.push(key);
+      iframes.push(newIframe);
     }
   }
+  callIFrames(iframes);
 }
 
 export function deleteFrames() {

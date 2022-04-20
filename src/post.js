@@ -4,6 +4,38 @@ const ctx = canvas.getContext('2d',  {
 	antialias: false,
 	depth: false
 });
+
+window.addEventListener("DOMContentLoaded", function() {
+
+	// signal the parent that we're loaded.
+	window.parent.postMessage("loaded", "*")
+
+	// listen for messages from the parent.
+	window.addEventListener("message", function(e) {
+			console.log(e.data);
+			var message = document.createElement("h1")
+
+			message.innerHTML = e.data
+
+			document.body.appendChild(message)
+
+	}, false)
+
+}, false)
+
+window.parent.postMessage("loaded", "*")
+
+// listen for messages from the parent.
+window.addEventListener("message", function(e) {
+		console.log(e.data);
+		var message = document.createElement("h1")
+
+		message.innerHTML = e.data
+
+		document.body.appendChild(message)
+
+}, false)
+
 // const img = new Image();
 
 // async function fetchResource(pathToResource) {

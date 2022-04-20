@@ -13,17 +13,20 @@ document.onreadystatechange = () => {
   window.addEventListener('scroll', delayedScroll);
   chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
     console.log(`Trip: ${request.trip}`);
-    if(request.trip === 'none') {
-      console.log('Remove frames and stop generating...');
-      window.removeEventListener('scroll', delayedScroll);
-      deleteFrames();
-      enableImgs();
-      sendResponse({isConfirmed: true, trip: 'none'});
-    } else if (request.trip === 'waves') {
-      console.log('Generating waves...');
-      scroll();
-      window.addEventListener('scroll', delayedScroll);
-      sendResponse({isConfirmed: true, trip: 'waves'});
+    switch(request.trip){
+      case 'none':
+        console.log('Remove frames and stop generating...');
+        window.removeEventListener('scroll', delayedScroll);
+        deleteFrames();
+        enableImgs();
+        sendResponse({isConfirmed: true, trip: 'none'});
+        break;
+      case 'waves':
+        console.log('Generating waves...');
+        scroll();
+        window.addEventListener('scroll', delayedScroll);
+        sendResponse({isConfirmed: true, trip: 'waves'});  
+        break;
     }
   })
 }

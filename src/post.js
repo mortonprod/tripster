@@ -23,18 +23,18 @@ window.addEventListener("DOMContentLoaded", function() {
 
 }, false)
 
-window.parent.postMessage("loaded", "*")
+// window.parent.postMessage("loaded", "*")
 
-// listen for messages from the parent.
-window.addEventListener("message", function(e) {
-		console.log(e.data);
-		var message = document.createElement("h1")
+// // listen for messages from the parent.
+// window.addEventListener("message", function(e) {
+// 		console.log(e.data);
+// 		var message = document.createElement("h1")
 
-		message.innerHTML = e.data
+// 		message.innerHTML = e.data
 
-		document.body.appendChild(message)
+// 		document.body.appendChild(message)
 
-}, false)
+// }, false)
 
 // const img = new Image();
 

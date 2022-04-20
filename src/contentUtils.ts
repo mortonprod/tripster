@@ -62,10 +62,11 @@ function dumpCSSText(element: HTMLElement){
 function messageIFrames(iframe) {
   const _window = iframe.contentWindow
   window.addEventListener("message", function(e) {
-      console.log(`MESSAGE ${e.origin} --- ${e.data} --- ${iframe.src} --- ${iframe.src.split("/").splice(0, 3).join("/")}`);
+      // console.log(`MESSAGE ${e.origin} --- ${e.data} --- ${iframe.src} --- ${iframe.src.split("/").splice(0, 3).join("/")}`);
       // wait for child to signal that it's loaded.
-      if ( e.data === "loaded") {
-          console.log('SEND MESSAGE');
+      // console.log(e);
+      if ( e.data === "loaded" && e.origin === "null" && e.source === iframe.contentWindow) {
+          // console.log('SEND MESSAGE');
           // send the child a message.
           _window.postMessage("Test BOOM", "*")
       }
@@ -73,23 +74,32 @@ function messageIFrames(iframe) {
 }
 
 function callIFrames(iframes) {
-  console.log(`DOM loaded????  --- ${document.readyState}`);
-  if( document.readyState !== 'loading' ) {
-    console.log('DOM should be loaded');
-    window.addEventListener("DOMContentLoaded", function() {
-      console.log('DOM loaded');
-      for(const iframe of iframes) {
-        messageIFrames(iframe);
-      }
-    }, false)
-  } else {
-    console.log('DOM loaded before');
-    for(const iframe of iframes) {
-      messageIFrames(iframe);
-    }
-  }
+  // console.log(`DOM loaded????  --- ${document.readyState}`);
+  // if( document.readyState !== 'loading' ) {
+  //   console.log('DOM should be loaded');
+  //   window.addEventListener("DOMContentLoaded", function() {
+  //     console.log('DOM loaded');
+  //     for(const iframe of iframes) {
+  //       messageIFrames(iframe);
+  //     }
+  //   }, false)
+  // } else {
+  //   console.log('DOM loaded before');
+  //   for(const iframe of iframes) {
+  //     messageIFrames(iframe);
+  //   }
+  // }
   for(const iframe of iframes) {
     messageIFrames(iframe);
+    // if( document.readyState !== 'loading' ) {
+    //   console.log(`DOM not loaded  --- ${document.readyState}`);
+    //   window.addEventListener("DOMContentLoaded", function() {
+    //     messageIFrames(iframe);
+    //   })
+    // } else {
+    //   console.log(`DOM complete  --- ${document.readyState}`);
+    //   messageIFrames(iframe);
+    // }
   }
 }
 
@@ -106,6 +116,8 @@ function createIFrames() {
       newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
       newIframe.id = key;
       newIframe.style.cssText = dumpCSSText(value.currentImg);
+      // newIframe.sandbox.add('allow-same-origin');
+      // newIframe.sandbox.add('allow-scripts');
       // newIframe.sandbox.add('allow-scripts');
       // newIframe.sandbox.add('allow-same-origin');
       value.currentImg.style.display = "none"

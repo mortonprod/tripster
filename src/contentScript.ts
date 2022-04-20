@@ -27,6 +27,12 @@ document.onreadystatechange = () => {
         window.addEventListener('scroll', delayedScroll);
         sendResponse({isConfirmed: true, trip: 'waves'});  
         break;
+      case 'psychedelic':
+        console.log('Generating psychedelic...');
+        scroll();
+        window.addEventListener('scroll', delayedScroll);
+        sendResponse({isConfirmed: true, trip: 'waves'});  
+        break;
     }
   })
 }

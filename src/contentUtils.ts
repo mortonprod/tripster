@@ -1,6 +1,6 @@
 const IFRAMES: Array<HTMLIFrameElement> = []
 let CREATED: Array<string> = []
-let TYPE = 'waves'
+let TYPE = 'psychedelic'
 
 const toDataURL = (url: string) => fetch(url)
   .then(response => response.blob())

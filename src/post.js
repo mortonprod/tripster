@@ -29,6 +29,12 @@ window.addEventListener("DOMContentLoaded", function() {
 					};
 					window.requestAnimationFrame(render);
 					break;
+				case 'psychedelic':
+					var image = new Image();
+					image.src = e.data.blob;
+					image.onload = function() {
+						ctx.drawImage(image, 0, 0);
+					};
 				}
 		}
 

@@ -60,7 +60,9 @@ function sendBlobToIframe(iframe: HTMLIFrameElement, url: string): Promise<void>
 async function createIFrames() {
   const imgs = getVisibleImgs();
   for (const img of imgs) {
-    if(!CREATED.includes(`${img.className}-${img.id}`)) {
+    console.log(CREATED);
+    if(!CREATED.includes(`${img.className}-${img.id}-${img.src}`)) {
+      console.log(`Start ${CREATED}`);
       // created_to_display.set(key,value.currentImg.style.display)
       const iframe = document.createElement("iframe");
       iframe.id = `${img.className}-${img.id}`
@@ -68,7 +70,7 @@ async function createIFrames() {
       iframe.style.cssText = dumpCSSText(img);
       img.style.display = "none"
       img.parentElement.prepend(iframe)
-      CREATED.push(`${img.className}-${img.id}`)
+      CREATED.push(`${img.className}-${img.id}-${img.src}`)
       IFRAMES.push(iframe);
       await sendBlobToIframe(iframe, img.src);
     }

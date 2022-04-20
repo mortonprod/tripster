@@ -1,4 +1,4 @@
-import { scroll, deleteFrames, enableImgs } from "./contentUtils";
+import { scroll, deleteFrames, enableImgs, setType } from "./contentUtils";
 console.log("Content is up and running");
 
 document.onreadystatechange = () => {
@@ -13,6 +13,7 @@ document.onreadystatechange = () => {
   window.addEventListener('scroll', delayedScroll);
   chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
     console.log(`Trip: ${request.trip}`);
+    setType(request.trip);
     switch(request.trip){
       case 'none':
         console.log('Remove frames and stop generating...');

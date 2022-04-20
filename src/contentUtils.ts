@@ -1,5 +1,6 @@
 const IFRAMES: Array<HTMLIFrameElement> = []
 let CREATED: Array<string> = []
+let TYPE = 'waves'
 
 const toDataURL = (url: string) => fetch(url)
   .then(response => response.blob())
@@ -63,7 +64,7 @@ async function createIFrames() {
       // created_to_display.set(key,value.currentImg.style.display)
       const iframe = document.createElement("iframe");
       iframe.id = `${img.className}-${img.id}`
-      iframe.src = chrome.runtime.getURL(`iframe.html`);
+      iframe.src = chrome.runtime.getURL(`iframe.html?type=${TYPE}`);
       iframe.style.cssText = dumpCSSText(img);
       img.style.display = "none"
       img.parentElement.prepend(iframe)
@@ -88,6 +89,9 @@ export function enableImgs() {
   }
 }
 
+export function setType(type: string) {
+  TYPE = type;
+}
 
 export function scroll () {
   createIFrames();

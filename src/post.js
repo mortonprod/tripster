@@ -5,24 +5,31 @@ const ctx = canvas.getContext('2d',  {
 	depth: false
 });
 
+const params = new URLSearchParams(window.location.search);
+const TYPE = params.get('type');
+
 window.addEventListener("DOMContentLoaded", function() {
 	window.parent.postMessage("loaded", "*")
 	window.addEventListener("message", function(e) {
 		Module['onRuntimeInitialized'] = () => {
 			console.log(e.data);
-			console.log(`Initial width ${canvas.width} ${canvas.height}`);
-			var _init = Module.cwrap("init", "number", ["number", "number"]);
-			var _render = Module.cwrap("render", null, ["number"]);
-			var pointer = _init(canvas.width, canvas.height);
-			var pointer = Module._init(canvas.width, canvas.height);
-			var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
-			var img = new ImageData(data, canvas.width, canvas.height);
-			var render = (timestamp) => {
-				_render(timestamp);
-				ctx.putImageData(img, 0, 0);
-				window.requestAnimationFrame(render);
-			};
-			window.requestAnimationFrame(render);
+			switch(TYPE){
+				case 'waves':
+					console.log(`Initial width ${canvas.width} ${canvas.height}`);
+					var _init = Module.cwrap("init", "number", ["number", "number"]);
+					var _render = Module.cwrap("render", null, ["number"]);
+					var pointer = _init(canvas.width, canvas.height);
+					var pointer = Module._init(canvas.width, canvas.height);
+					var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
+					var img = new ImageData(data, canvas.width, canvas.height);
+					var render = (timestamp) => {
+						_render(timestamp);
+						ctx.putImageData(img, 0, 0);
+						window.requestAnimationFrame(render);
+					};
+					window.requestAnimationFrame(render);
+					break;
+				}
 		}
 
 	}, false)

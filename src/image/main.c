@@ -116,11 +116,12 @@ void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
       int fadeG = round(120.0 * lerp * lerp * lerp * absoluteDistanceRatioGB);
       // data[yw + x] = red;
       // printf("Data: %d %d %d \n",fadeB,fadeG,fadeR);
-      data[yw + x] =
-        (255 << 24) |   // A
-        (fadeB << 16) | // B
-        (fadeG << 8) |  // G
-        fadeR;          // R
+      // data[yw + x] =
+      //   (255 << 24) |   // A
+      //   (fadeB << 16) | // B
+      //   (fadeG << 8) |  // G
+      //   fadeR;          // R
+      data[yw + x] = data[yw + x] + (255 << 24);
       // printf("Data: %d \n",data[yw+x]);
     }
   }

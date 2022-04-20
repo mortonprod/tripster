@@ -1,9 +1,10 @@
 const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d',  {
-	alpha: false,
-	antialias: false,
-	depth: false
-});
+const ctx = canvas.getContext('2d');
+// const ctx = canvas.getContext('2d',  {
+// 	alpha: false,
+// 	antialias: false,
+// 	depth: false
+// });
 
 const params = new URLSearchParams(window.location.search);
 const TYPE = params.get('type');
@@ -12,7 +13,7 @@ window.addEventListener("DOMContentLoaded", function() {
 	window.parent.postMessage("loaded", "*")
 	window.addEventListener("message", function(e) {
 		Module['onRuntimeInitialized'] = () => {
-			console.log(e.data);
+			// console.log(e.data);
 			switch(TYPE){
 				case 'waves':
 					console.log(`Initial width ${canvas.width} ${canvas.height}`);
@@ -31,9 +32,10 @@ window.addEventListener("DOMContentLoaded", function() {
 					break;
 				case 'psychedelic':
 					var image = new Image();
+					// console.log(`Blob: ${e.data.blob}`);
 					image.src = e.data.blob;
 					image.onload = function() {
-						ctx.drawImage(image, 0, 0);
+						ctx.drawImage(image, 0, 0, canvas.width,canvas.height);
 					};
 				}
 		}

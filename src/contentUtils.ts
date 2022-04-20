@@ -43,6 +43,7 @@ function getVisibleImgs () {
 
 function sendBlobToIframe(iframe: HTMLIFrameElement, url: string): Promise<void> {
   return new Promise((resolve) => {
+    // console.log(`url: ${url}`);
     toDataURL(url).then((blob)=> {
       const _window = iframe.contentWindow
       console.log(`iframe src: ${iframe.src}`);

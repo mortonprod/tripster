@@ -4,34 +4,34 @@ const ctx = canvas.getContext('2d',  {
 	antialias: false,
 	depth: false
 });
-// const img = new Image();
+const img = new Image();
 
 
-Module['onRuntimeInitialized'] = () => {
-	console.log(`Initial width ${canvas.width} ${canvas.height}`);
-	var _init = Module.cwrap("init", "number", ["number", "number"]);
-	var _render = Module.cwrap("render", null, ["number"]);
-	var pointer = _init(canvas.width, canvas.height);
-	var pointer = Module._init(canvas.width, canvas.height);
-	var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
-	var img = new ImageData(data, canvas.width, canvas.height);
-	var render = (timestamp) => {
-		_render(timestamp);
-		ctx.putImageData(img, 0, 0);
-		window.requestAnimationFrame(render);
-	};
-	window.requestAnimationFrame(render);
-}
-
-// img.src = "https://alexandermorton.co.uk/68cb5bcc4e0025874fdb34456d66d09f.jpg";
-// img.crossOrigin = "anonymous";
-// img.onload = () => {
-//     ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
-//     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-//     var input_ptr = Module._malloc(canvas.width * canvas.height * 4);
-//     Module.HEAPU8.set(imageData.data, input_ptr);
-//     blackStrips(input_ptr,canvas.width,canvas.height);
+// Module['onRuntimeInitialized'] = () => {
+// 	console.log(`Initial width ${canvas.width} ${canvas.height}`);
+// 	var _init = Module.cwrap("init", "number", ["number", "number"]);
+// 	var _render = Module.cwrap("render", null, ["number"]);
+// 	var pointer = _init(canvas.width, canvas.height);
+// 	var pointer = Module._init(canvas.width, canvas.height);
+// 	var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
+// 	var img = new ImageData(data, canvas.width, canvas.height);
+// 	var render = (timestamp) => {
+// 		_render(timestamp);
+// 		ctx.putImageData(img, 0, 0);
+// 		window.requestAnimationFrame(render);
+// 	};
+// 	window.requestAnimationFrame(render);
 // }
+
+img.src = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
+img.crossOrigin = "anonymous";
+img.onload = () => {
+    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    var input_ptr = Module._malloc(canvas.width * canvas.height * 4);
+    Module.HEAPU8.set(imageData.data, input_ptr);
+    blackStrips(input_ptr,canvas.width,canvas.height);
+}
 
 var js_wrapped_fib = Module.cwrap("fib", "number", ["number"]);
 var addOne = Module.cwrap("addOne", null, ["number", "number", "number"]);

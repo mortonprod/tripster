@@ -27,3 +27,11 @@ chrome.storage.onChanged.addListener((changes) => {
     );
   }
 });
+
+// const img = new Image();
+
+// img.src = "https://alexandermorton.co.uk/68cb5bcc4e0025874fdb34456d66d09f.jpg";
+// // img.crossOrigin = "anonymous";
+// img.onload = () => {
+//   console.log('Loaded');
+// }

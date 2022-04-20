@@ -70,6 +70,8 @@ function createIFrames() {
       newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
       newIframe.id = key;
       newIframe.style.cssText = dumpCSSText(value.currentImg);
+      // newIframe.sandbox.add('allow-scripts');
+      // newIframe.sandbox.add('allow-same-origin');
       value.currentImg.style.display = "none"
       value.currentImg.parentElement.prepend(newIframe)
       created.push(key);

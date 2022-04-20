@@ -3,8 +3,11 @@
 #define COEFF_1 0.7853981633974483
 #define COEFF_2 2.356194490192345
 #define BLADES 3
+#define PSY_BLADES 100
 #define CYCLE_WIDTH 100
+#define PSY_CYCLE_WIDTH 1000
 #define BLADES_T_CYCLE_WIDTH 300
+#define PSY_BLADES_T_CYCLE_WIDTH 3000
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -107,7 +110,7 @@ void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
       int asbs = dxsq + dysq;
       double distanceFromCenter = sqrt(asbs);
       double scaledDistance = asbs / 400.0 + distanceFromCenter;
-      double lerp = 1.0 - (customFmod(fabs(scaledDistance - scaledTimestamp + angle * BLADES_T_CYCLE_WIDTH), CYCLE_WIDTH)) / CYCLE_WIDTH;
+      double lerp = 1.0 - (customFmod(fabs(scaledDistance - scaledTimestamp + angle * PSY_BLADES_T_CYCLE_WIDTH), PSY_CYCLE_WIDTH)) / PSY_CYCLE_WIDTH;
       // Fade R more slowly
       double absoluteDistanceRatioGB = 1.0 - distanceFromCenter / maxDistance;
       double absoluteDistanceRatioR = absoluteDistanceRatioGB * 0.8 + 0.2;

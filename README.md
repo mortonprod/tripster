@@ -13,6 +13,7 @@ emcc --post-js src/post.js -o static/iframe.js src/image/main.c -s WASM=1 -s EXP
 * How do we get images in the iframe context when it will not have the access rights to get to that webpage? No access to cookies or JWT
 * Will need to update to manifest version 3 by the end of the year but can't now since can't run wasm in extension with this.
 * How do you get a random picture to fit a random frame in another website.
+* How do you even get access to the currents images within the extension?
 # Reference
 
 https://github.com/GoogleChromeLabs/wasm-av1

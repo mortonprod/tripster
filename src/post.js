@@ -4,7 +4,37 @@ const ctx = canvas.getContext('2d',  {
 	antialias: false,
 	depth: false
 });
-const img = new Image();
+// const img = new Image();
+
+// async function fetchResource(pathToResource) {
+//   try {
+//     const response = await fetch(pathToResource);
+//     if (!response.ok) {
+//       throw Error(`${response.status} ${response.statusText}`);
+//     }
+//     return response;
+//   } catch (error) {
+//     console.log('Looks like there was a problem: ', error);
+//   }
+// }
+
+// function showImage(responseAsBlob) {
+//   const imgUrl = URL.createObjectURL(responseAsBlob);
+//   img.src = imgUrl;
+// 	img.onload = () => {
+// 		ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+// 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+// 	}
+// }
+// async function get(){
+// 	// Uses the same fetchResource function as shown in previous examples
+// 	const response = await fetchResource('https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png');
+// 	if (response) {
+// 		showImage(await response.blob());
+// 	}
+// }
+
+// get();
 
 
 // Module['onRuntimeInitialized'] = () => {
@@ -23,15 +53,15 @@ const img = new Image();
 // 	window.requestAnimationFrame(render);
 // }
 
-img.src = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
-img.crossOrigin = "anonymous";
-img.onload = () => {
-    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
-    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    var input_ptr = Module._malloc(canvas.width * canvas.height * 4);
-    Module.HEAPU8.set(imageData.data, input_ptr);
-    blackStrips(input_ptr,canvas.width,canvas.height);
-}
+// img.src = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
+// img.crossOrigin = "anonymous";
+// img.onload = () => {
+//     ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+//     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+//     var input_ptr = Module._malloc(canvas.width * canvas.height * 4);
+//     Module.HEAPU8.set(imageData.data, input_ptr);
+//     blackStrips(input_ptr,canvas.width,canvas.height);
+// }
 
 var js_wrapped_fib = Module.cwrap("fib", "number", ["number"]);
 var addOne = Module.cwrap("addOne", null, ["number", "number", "number"]);

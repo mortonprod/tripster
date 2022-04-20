@@ -10,4 +10,8 @@ document.onreadystatechange = () => {
     clearTimeout(doscroll);
     doscroll = setTimeout(scroll, 500);
   }
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
+    console.log(`Trip: ${request.trip}`);
+    sendResponse({isConfirmed: true});
+  })
 }

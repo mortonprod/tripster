@@ -59,11 +59,13 @@ function dumpCSSText(element: HTMLElement){
   return s;
 }
 const created: Array<string> = []
+// const created_to_display = new Map();
 function createIFrames() {
   const imgs = getVisibleImgs();
   for (const [key,value] of imgs.entries()) {
     if(!created.includes(key)) {
       console.log(`Create iframe for image: ${key}`);
+      // created_to_display.set(key,value.currentImg.style.display)
       const newIframe = document.createElement("iframe");
       newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
       newIframe.id = key;
@@ -72,6 +74,19 @@ function createIFrames() {
       value.currentImg.parentElement.prepend(newIframe)
       created.push(key);
     }
+  }
+}
+
+export function deleteFrames() {
+  for(const key of created) {
+    document.getElementById(key).remove();
+  }
+}
+
+export function enableImgs() {
+  const currentImgs = document.getElementsByTagName("img");
+  for (const currentImg of currentImgs) {
+    currentImg.style.display = "block"
   }
 }
 

@@ -31,12 +31,26 @@ window.addEventListener("DOMContentLoaded", function() {
 					window.requestAnimationFrame(render);
 					break;
 				case 'psychedelic':
+					var _init = Module.cwrap("init", "number", ["number", "number"]);
+					var _psyrender = Module.cwrap("psyrender", null, ["number"]);
 					var image = new Image();
-					// console.log(`Blob: ${e.data.blob}`);
 					image.src = e.data.blob;
 					image.onload = function() {
 						ctx.drawImage(image, 0, 0, canvas.width,canvas.height);
+						var imgData = ctx.getImageData(0, 0, canvas.width,canvas.height);
+						var pointer = _init(canvas.width, canvas.height);
+						Module.HEAPU8.set(imgData.data, pointer);
+						// var input_ptr = Module._malloc(canvas.width*canvas.height*4);
+						var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
+						var img = new ImageData(data, canvas.width, canvas.height);
+						var render = (timestamp) => {
+							_psyrender(timestamp);
+							ctx.putImageData(img, 0,0);
+							window.requestAnimationFrame(render);
+						};
+						window.requestAnimationFrame(render);
 					};
+					break;
 				}
 		}
 

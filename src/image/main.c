@@ -92,6 +92,40 @@ void EMSCRIPTEN_KEEPALIVE render(double timestamp) {
   }
 }
 
+void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
+  int scaledTimestamp = floor(timestamp / 10.0 + 2000.0);
+  // printf("Time: %d \n",scaledTimestamp);
+  for (int y = 0; y < height-100; y++) {
+    int dy = ch - y;
+    int dysq = dy * dy;
+    int yw = y * width;
+    for (int x = 0; x < width-100; x++) {
+      int dx = cw - x;
+      int dxsq = dx * dx;
+      double angle = customAtan2(dx, dy) / RAD;
+      // Arbitrary mangle of the distance, just something that looks pleasant
+      int asbs = dxsq + dysq;
+      double distanceFromCenter = sqrt(asbs);
+      double scaledDistance = asbs / 400.0 + distanceFromCenter;
+      double lerp = 1.0 - (customFmod(fabs(scaledDistance - scaledTimestamp + angle * BLADES_T_CYCLE_WIDTH), CYCLE_WIDTH)) / CYCLE_WIDTH;
+      // Fade R more slowly
+      double absoluteDistanceRatioGB = 1.0 - distanceFromCenter / maxDistance;
+      double absoluteDistanceRatioR = absoluteDistanceRatioGB * 0.8 + 0.2;
+      int fadeB = round(50.0 * lerp * absoluteDistanceRatioGB);
+      int fadeR = round(240.0 * lerp * absoluteDistanceRatioR * (1.0 + lerp) / 2.0);
+      int fadeG = round(120.0 * lerp * lerp * lerp * absoluteDistanceRatioGB);
+      // data[yw + x] = red;
+      // printf("Data: %d %d %d \n",fadeB,fadeG,fadeR);
+      data[yw + x] =
+        (255 << 24) |   // A
+        (fadeB << 16) | // B
+        (fadeG << 8) |  // G
+        fadeR;          // R
+      // printf("Data: %d \n",data[yw+x]);
+    }
+  }
+}
+
 int EMSCRIPTEN_KEEPALIVE fib(int n){
     if(n == 0 || n == 1)
         return 1;

@@ -59,8 +59,18 @@ function dumpCSSText(element: HTMLElement){
   return s;
 }
 
+const toDataURL = (url: string) => fetch(url)
+  .then(response => response.blob())
+  .then(blob => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+}))
+
 function messageIFrames(iframe) {
   const _window = iframe.contentWindow
+  console.log(`iframe src: ${iframe.src}`);
   window.addEventListener("message", function(e) {
       // console.log(`MESSAGE ${e.origin} --- ${e.data} --- ${iframe.src} --- ${iframe.src.split("/").splice(0, 3).join("/")}`);
       // wait for child to signal that it's loaded.
@@ -113,7 +123,7 @@ function createIFrames() {
       console.log(`Create iframe for image: ${key}`);
       // created_to_display.set(key,value.currentImg.style.display)
       const newIframe = document.createElement("iframe");
-      newIframe.src = chrome.runtime.getURL(`iframe.html?id=${key}`);
+      newIframe.src = chrome.runtime.getURL(`iframe.html?src=${value.src}`);
       newIframe.id = key;
       newIframe.style.cssText = dumpCSSText(value.currentImg);
       // newIframe.sandbox.add('allow-same-origin');

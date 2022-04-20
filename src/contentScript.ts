@@ -19,6 +19,11 @@ document.onreadystatechange = () => {
       deleteFrames();
       enableImgs();
       sendResponse({isConfirmed: true, trip: 'none'});
+    } else if (request.trip === 'waves') {
+      console.log('Generating waves...');
+      scroll();
+      window.addEventListener('scroll', delayedScroll);
+      sendResponse({isConfirmed: true, trip: 'waves'});
     }
   })
 }

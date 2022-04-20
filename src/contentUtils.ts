@@ -58,7 +58,7 @@ function dumpCSSText(element: HTMLElement){
   }
   return s;
 }
-const created: Array<string> = []
+let created: Array<string> = []
 // const created_to_display = new Map();
 function createIFrames() {
   const imgs = getVisibleImgs();
@@ -81,6 +81,7 @@ export function deleteFrames() {
   for(const key of created) {
     document.getElementById(key).remove();
   }
+  created = [];
 }
 
 export function enableImgs() {

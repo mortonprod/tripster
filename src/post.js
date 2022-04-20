@@ -6,84 +6,28 @@ const ctx = canvas.getContext('2d',  {
 });
 
 window.addEventListener("DOMContentLoaded", function() {
-
-	// signal the parent that we're loaded.
 	window.parent.postMessage("loaded", "*")
-
-	// listen for messages from the parent.
 	window.addEventListener("message", function(e) {
+		Module['onRuntimeInitialized'] = () => {
 			console.log(e.data);
-			var message = document.createElement("h1")
-
-			message.innerHTML = e.data
-
-			document.body.appendChild(message)
+			console.log(`Initial width ${canvas.width} ${canvas.height}`);
+			var _init = Module.cwrap("init", "number", ["number", "number"]);
+			var _render = Module.cwrap("render", null, ["number"]);
+			var pointer = _init(canvas.width, canvas.height);
+			var pointer = Module._init(canvas.width, canvas.height);
+			var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
+			var img = new ImageData(data, canvas.width, canvas.height);
+			var render = (timestamp) => {
+				_render(timestamp);
+				ctx.putImageData(img, 0, 0);
+				window.requestAnimationFrame(render);
+			};
+			window.requestAnimationFrame(render);
+		}
 
 	}, false)
 
 }, false)
-
-// window.parent.postMessage("loaded", "*")
-
-// // listen for messages from the parent.
-// window.addEventListener("message", function(e) {
-// 		console.log(e.data);
-// 		var message = document.createElement("h1")
-
-// 		message.innerHTML = e.data
-
-// 		document.body.appendChild(message)
-
-// }, false)
-
-// const img = new Image();
-
-// async function fetchResource(pathToResource) {
-//   try {
-//     const response = await fetch(pathToResource);
-//     if (!response.ok) {
-//       throw Error(`${response.status} ${response.statusText}`);
-//     }
-//     return response;
-//   } catch (error) {
-//     console.log('Looks like there was a problem: ', error);
-//   }
-// }
-
-// function showImage(responseAsBlob) {
-//   const imgUrl = URL.createObjectURL(responseAsBlob);
-//   img.src = imgUrl;
-// 	img.onload = () => {
-// 		ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
-// 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-// 	}
-// }
-// async function get(){
-// 	// Uses the same fetchResource function as shown in previous examples
-// 	const response = await fetchResource('https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png');
-// 	if (response) {
-// 		showImage(await response.blob());
-// 	}
-// }
-
-// get();
-
-
-// Module['onRuntimeInitialized'] = () => {
-// 	console.log(`Initial width ${canvas.width} ${canvas.height}`);
-// 	var _init = Module.cwrap("init", "number", ["number", "number"]);
-// 	var _render = Module.cwrap("render", null, ["number"]);
-// 	var pointer = _init(canvas.width, canvas.height);
-// 	var pointer = Module._init(canvas.width, canvas.height);
-// 	var data = new Uint8ClampedArray(Module.HEAPU8.buffer, pointer, canvas.width * canvas.height * 4);
-// 	var img = new ImageData(data, canvas.width, canvas.height);
-// 	var render = (timestamp) => {
-// 		_render(timestamp);
-// 		ctx.putImageData(img, 0, 0);
-// 		window.requestAnimationFrame(render);
-// 	};
-// 	window.requestAnimationFrame(render);
-// }
 
 // img.src = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
 // img.crossOrigin = "anonymous";

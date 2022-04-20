@@ -60,12 +60,9 @@ function sendBlobToIframe(iframe: HTMLIFrameElement, url: string): Promise<void>
 async function createIFrames() {
   const imgs = getVisibleImgs();
   for (const img of imgs) {
-    console.log(CREATED);
     if(!CREATED.includes(`${img.className}-${img.id}-${img.src}`)) {
-      console.log(`Start ${CREATED}`);
-      // created_to_display.set(key,value.currentImg.style.display)
       const iframe = document.createElement("iframe");
-      iframe.id = `${img.className}-${img.id}`
+      iframe.id = `${img.className}-${img.id}-${img.src}`
       iframe.src = chrome.runtime.getURL(`iframe.html?type=${TYPE}`);
       iframe.style.cssText = dumpCSSText(img);
       img.style.display = "none"

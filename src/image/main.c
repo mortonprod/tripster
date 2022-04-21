@@ -20,11 +20,7 @@ int ch;
 int cw;
 double maxDistance;
 
-/*
-We'll cheat a bit and just allocate loads of memory
-so we don't have to implement malloc
-*/
-int data[2000000];
+int data[200000];
 int red = (255 << 24) | 255;
 int* EMSCRIPTEN_KEEPALIVE init(int cWidth, int cHeight) {
   width = cWidth;
@@ -33,13 +29,6 @@ int* EMSCRIPTEN_KEEPALIVE init(int cWidth, int cHeight) {
   ch = height >> 1;
   cw = width >> 1;
   maxDistance = sqrt(ch * ch + cw * cw);
-  for (int y = 0; y < height; y++) {
-    int yw = y * width;
-    for (int x = 0; x < width; x++) {
-      data[yw + x] = red;
-    }
-  }
-  // data = malloc(pixelCount * sizeof(int));
   return &data[0];
 }
 
@@ -63,7 +52,6 @@ double customFmod(double a, double b)
 }
 void EMSCRIPTEN_KEEPALIVE render(double timestamp) {
   int scaledTimestamp = floor(timestamp / 10.0 + 2000.0);
-  // printf("Time: %d \n",scaledTimestamp);
   for (int y = 0; y < height; y++) {
     int dy = ch - y;
     int dysq = dy * dy;
@@ -83,20 +71,16 @@ void EMSCRIPTEN_KEEPALIVE render(double timestamp) {
       int fadeB = round(50.0 * lerp * absoluteDistanceRatioGB);
       int fadeR = round(240.0 * lerp * absoluteDistanceRatioR * (1.0 + lerp) / 2.0);
       int fadeG = round(120.0 * lerp * lerp * lerp * absoluteDistanceRatioGB);
-      // data[yw + x] = red;
-      // printf("Data: %d %d %d \n",fadeB,fadeG,fadeR);
       data[yw + x] =
         (255 << 24) |   // A
         (fadeB << 16) | // B
         (fadeG << 8) |  // G
         fadeR;          // R
-      // printf("Data: %d \n",data[yw+x]);
     }
   }
 }
 void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
   int scaledTimestamp = floor(timestamp / 10.0 + 2000.0);
-  // printf("Time: %d \n",scaledTimestamp);
   for (int y = 0; y < height; y++) {
     int dy = ch - y;
     int dysq = dy * dy;
@@ -116,35 +100,9 @@ void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
       int fadeB = round(50.0 * lerp * absoluteDistanceRatioGB);
       int fadeR = round(240.0 * lerp * absoluteDistanceRatioR * (1.0 + lerp) / 2.0);
       int fadeG = round(120.0 * lerp * lerp * lerp * absoluteDistanceRatioGB);
-      // data[yw + x] = red;
-      // printf("Data: %d %d %d \n",fadeB,fadeG,fadeR);
       data[yw + x] = data[yw + x] +
         (fadeG << 8) |  // G
         fadeR;          // R
-      // data[yw + x] = data[yw + x] + (255 << 24);
-      // printf("Data: %d \n",data[yw+x]);
-    }
-  }
-}
-
-int EMSCRIPTEN_KEEPALIVE fib(int n){
-    if(n == 0 || n == 1)
-        return 1;
-    else
-        return fib(n - 1) + fib(n - 2);
-}
-
-void EMSCRIPTEN_KEEPALIVE addOne(int* input_ptr, int* output_ptr, int len){
-	int i;
-	for(i = 0; i < len; i++)
-    	output_ptr[i] = input_ptr[i] + 1;
-}
-void EMSCRIPTEN_KEEPALIVE blackStrips(int* input_ptr, int width, int height){
-  printf("Width %d, height: %d", width, height);
-  for (int y = 0; y < height; y++) {
-    int yw = y * width;
-    for (int x = 0; x < width; x++) {
-      input_ptr[yw + x] = red;
     }
   }
 }

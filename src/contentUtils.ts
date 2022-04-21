@@ -41,15 +41,19 @@ function getVisibleImgs () {
   return visible
 }
 
-function sendBlobToIframe(iframe: HTMLIFrameElement, url: string): Promise<void> {
+function sendBlobToIframe(iframe: HTMLIFrameElement, img: HTMLImageElement): Promise<void> {
   return new Promise((resolve) => {
     // console.log(`url: ${url}`);
-    toDataURL(url).then((blob)=> {
+    toDataURL(img.src).then((blob)=> {
       const _window = iframe.contentWindow
       console.log(`iframe src: ${iframe.src}`);
       window.addEventListener("message", function(e) {
           if ( e.data === "loaded" && e.origin === "null" && e.source === iframe.contentWindow) {
               _window.postMessage({type:'blob',blob}, "*")
+              // img.parentElement.prepend(iframe)
+              // iframe.style.cssText = dumpCSSText(img);
+              img.style.display = "none"
+              iframe.style.display = "block"
               resolve();
           }
       })
@@ -66,11 +70,12 @@ async function createIFrames() {
       iframe.id = `${img.className}-${img.id}-${img.src}`
       iframe.src = chrome.runtime.getURL(`iframe.html?type=${TYPE}`);
       iframe.style.cssText = dumpCSSText(img);
-      img.style.display = "none"
+      // img.style.display = "none"
+      iframe.style.display = "none"
       img.parentElement.prepend(iframe)
       CREATED.push(`${img.className}-${img.id}-${img.src}`)
       IFRAMES.push(iframe);
-      await sendBlobToIframe(iframe, img.src);
+      await sendBlobToIframe(iframe, img);
     }
   }
 }

@@ -12,10 +12,7 @@
       "js": ["contentScript.js"]
     }
   ],
-  "permissions": ["storage", "scripting"],
-  "host_permissions": [
-    "*://*/*"
-  ],
+  "permissions": ["storage"],
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
@@ -26,7 +23,7 @@
     ]
   },
   "content_security_policy": {
-    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self'; img-src data:"
+    "sandbox": "sandbox allow-scripts script-src 'self' 'unsafe-eval'; img-src data:"
   },
   "web_accessible_resources": [
     {

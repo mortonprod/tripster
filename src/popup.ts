@@ -6,14 +6,22 @@ document.getElementById('go-to-options').addEventListener('click', () => {
 
 const btn: HTMLButtonElement = document.querySelector('#btn');
 const sb: HTMLSelectElement = document.querySelector('#framework');
+
+chrome.storage.local.get("trip", function(data){
+  console.log(`Trip stored: ${JSON.stringify(data)}`);
+  sb.value = data.trip;
+})
+
 btn.onclick = (event) => {
     event.preventDefault();
     console.log(sb.value);
-    chrome.tabs.query({currentWindow: true}, (tabs) => {
-      for (const tab of tabs) {
-        chrome.tabs.sendMessage(tab.id, {trip: sb.value}, (response) => {
-          console.log(`Changed: ${response.isConfirmed}`);
-        })
-      }
+    chrome.storage.local.set({'trip': sb.value}, function(){
+      chrome.tabs.query({currentWindow: true}, (tabs) => {
+        for (const tab of tabs) {
+          chrome.tabs.sendMessage(tab.id, {trip: sb.value}, (response) => {
+            console.log(`Changed: ${JSON.stringify(response)}`);
+          })
+        }
+      })
     })
 };

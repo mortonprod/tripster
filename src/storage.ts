@@ -3,7 +3,7 @@ export interface Storage {} // eslint-disable-line
 
 export function getStorageData(): Promise<Storage> {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get(null, (result) => {
+    chrome.storage.local.get(null, (result) => {
       if (chrome.runtime.lastError) {
         return reject(chrome.runtime.lastError);
       }
@@ -15,7 +15,8 @@ export function getStorageData(): Promise<Storage> {
 
 export function setStorageData(data: Storage): Promise<void> {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.set(data, () => {
+    chrome.storage.local.set(data, () => {
+      console.log(`ERROR: ${chrome.runtime.lastError}`);
       if (chrome.runtime.lastError) {
         return reject(chrome.runtime.lastError);
       }
@@ -29,7 +30,7 @@ export function getStorageItem<Key extends keyof Storage>(
   key: Key,
 ): Promise<Storage[Key]> {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get([key], (result) => {
+    chrome.storage.local.get([key], (result) => {
       if (chrome.runtime.lastError) {
         return reject(chrome.runtime.lastError);
       }
@@ -44,7 +45,7 @@ export function setStorageItem<Key extends keyof Storage>(
   value: Storage[Key],
 ): Promise<void> {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.set({ [key]: value }, () => {
+    chrome.storage.local.set({ [key]: value }, () => {
       if (chrome.runtime.lastError) {
         return reject(chrome.runtime.lastError);
       }

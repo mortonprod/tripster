@@ -8,17 +8,16 @@ document.onreadystatechange = () => {
     clearTimeout(doscroll);
     doscroll = setTimeout(scroll, 500);
   }
-  scroll();
-  window.addEventListener('scroll', delayedScroll);
   chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
-    console.log(`Trip: ${request.trip}`);
+    console.log(`Trip: ${JSON.stringify(request.trip)}`);
     setType(request.trip);
+    console.log('Remove frames and stop generating...');
+    window.removeEventListener('scroll', delayedScroll);
+    deleteFrames();
+    enableImgs();
     switch(request.trip){
       case 'none':
-        console.log('Remove frames and stop generating...');
-        window.removeEventListener('scroll', delayedScroll);
-        deleteFrames();
-        enableImgs();
+        console.log('Do nothing');
         sendResponse({isConfirmed: true, trip: 'none'});
         break;
       case 'waves':

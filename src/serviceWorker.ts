@@ -1,29 +1,28 @@
-import { initializeStorageWithDefaults } from './storage';
-
 chrome.runtime.onInstalled.addListener(async () => {
   // Here goes everything you want to execute after extension initialization
 
-  await initializeStorageWithDefaults({});
-
   console.log('Extension successfully installed!');
+  chrome.storage.local.get("trip", function(data){
+    console.log(`Changes trip: ${JSON.stringify(data.trip)}`)
+    chrome.tabs.query({currentWindow: true}, (tabs) => {
+      for (const tab of tabs) {
+        chrome.tabs.sendMessage(tab.id, {trip: data.trip}, (response) => {
+          console.log(`Changed: ${JSON.stringify(response)}`);
+        })
+      }
+    })
+  })
 
-  chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      console.log("background.js got a message")
-      console.log(request);
-      console.log(sender);
-      console.log(sender.tab.id);
-      chrome.tabs.sendMessage(sender.tab.id, request);
-      sendResponse("bar");
-    }
-  );
 });
 
 // Log storage changes, might be safely removed
 chrome.storage.onChanged.addListener((changes) => {
-  for (const [key, value] of Object.entries(changes)) {
-    console.log(
-      `"${key}" changed from "${value.oldValue}" to "${value.newValue}"`,
-    );
-  }
+  console.log(`Changes trip: ${changes.trip.newValue}`)
+  chrome.tabs.query({currentWindow: true}, (tabs) => {
+    for (const tab of tabs) {
+      chrome.tabs.sendMessage(tab.id, {trip: changes.trip.newValue}, (response) => {
+        console.log(`Changed: ${JSON.stringify(response)}`);
+      })
+    }
+  })
 });

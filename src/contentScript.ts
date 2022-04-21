@@ -8,6 +8,16 @@ document.onreadystatechange = () => {
     clearTimeout(doscroll);
     doscroll = setTimeout(scroll, 500);
   }
+  chrome.storage.local.get("trip", function(data){
+    console.log(`Changes trip: ${JSON.stringify(data.trip)}`)
+    if(data.trip) {
+      setType(data.trip);
+    } else {
+      setType('psychedelic');
+    }
+    scroll();
+    window.addEventListener('scroll', delayedScroll);
+  })
   chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
     console.log(`Trip: ${JSON.stringify(request.trip)}`);
     setType(request.trip);

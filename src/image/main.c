@@ -3,11 +3,11 @@
 #define COEFF_1 0.7853981633974483
 #define COEFF_2 2.356194490192345
 #define BLADES 3
-#define PSY_BLADES 100
+#define PSY_BLADES 10
 #define CYCLE_WIDTH 100
-#define PSY_CYCLE_WIDTH 1000
+#define PSY_CYCLE_WIDTH 100
 #define BLADES_T_CYCLE_WIDTH 300
-#define PSY_BLADES_T_CYCLE_WIDTH 3000
+#define PSY_BLADES_T_CYCLE_WIDTH 300
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,7 +94,6 @@ void EMSCRIPTEN_KEEPALIVE render(double timestamp) {
     }
   }
 }
-
 void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
   int scaledTimestamp = floor(timestamp / 10.0 + 2000.0);
   // printf("Time: %d \n",scaledTimestamp);
@@ -120,8 +119,6 @@ void EMSCRIPTEN_KEEPALIVE psyrender(double timestamp) {
       // data[yw + x] = red;
       // printf("Data: %d %d %d \n",fadeB,fadeG,fadeR);
       data[yw + x] = data[yw + x] +
-        (255 << 24) |   // A
-        (fadeB << 16) | // B
         (fadeG << 8) |  // G
         fadeR;          // R
       // data[yw + x] = data[yw + x] + (255 << 24);

@@ -48,7 +48,7 @@ function sendBlobToIframe(iframe: HTMLIFrameElement, img: HTMLImageElement): Pro
       const _window = iframe.contentWindow
       console.log(`iframe src: ${iframe.src}`);
       window.addEventListener("message", function(e) {
-          if ( e.data === "loaded" && e.origin === "null" && e.source === iframe.contentWindow) {
+          if ( e.data === iframe.id.substring(0,1000) && e.origin === "null") {
               _window.postMessage({type:'blob',blob}, "*")
               // img.parentElement.prepend(iframe)
               // iframe.style.cssText = dumpCSSText(img);
@@ -68,7 +68,7 @@ async function createIFrames() {
     if(!CREATED.includes(`${img.className}-${img.id}-${img.src}`)) {
       const iframe = document.createElement("iframe");
       iframe.id = `${img.className}-${img.id}-${img.src}`
-      iframe.src = chrome.runtime.getURL(`iframe.html?type=${TYPE}`);
+      iframe.src = chrome.runtime.getURL(`iframe.html?type=${TYPE}&id=${iframe.id.substring(0,1000)}`);
       iframe.style.cssText = dumpCSSText(img);
       // img.style.display = "none"
       iframe.style.display = "none"

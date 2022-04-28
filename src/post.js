@@ -8,9 +8,10 @@ const ctx = canvas.getContext('2d');
 
 const params = new URLSearchParams(window.location.search);
 const TYPE = params.get('type');
+const ID = params.get('id');
 
 window.addEventListener("DOMContentLoaded", function() {
-	window.parent.postMessage("loaded", "*")
+	window.parent.postMessage(ID, "*")
 	window.addEventListener("message", function(e) {
 		Module['onRuntimeInitialized'] = () => {
 			// console.log(e.data);

@@ -1,7 +1,7 @@
 {
   "name": "Tripster",
   "description": "Example manipulation of all images on a webpage using HTML canvas and web assembly. The end result is a kaleidoscope of fun!",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 3,
   "background": {
     "service_worker": "serviceWorker.js"

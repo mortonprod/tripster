@@ -1,6 +1,6 @@
 {
   "name": "Tripster",
-  "description": "Example manipulation of all images on a webpage using HTML canvas and web assembly. The end result is a kaleidoscope of fun!",
+  "description": "This is a chrome extension to manipulate website images.",
   "version": "0.0.2",
   "manifest_version": 3,
   "background": {

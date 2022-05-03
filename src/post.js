@@ -11,9 +11,9 @@ const TYPE = params.get('type');
 const ID = params.get('id');
 
 window.addEventListener("DOMContentLoaded", function() {
+	Module['onRuntimeInitialized'] = () => {
 	window.parent.postMessage(ID, "*")
 	window.addEventListener("message", function(e) {
-		Module['onRuntimeInitialized'] = () => {
 			// console.log(e.data);
 			switch(TYPE){
 				case 'waves':
@@ -53,9 +53,9 @@ window.addEventListener("DOMContentLoaded", function() {
 					};
 					break;
 				}
+				
+			}, false)
 		}
-
-	}, false)
 
 }, false)
 

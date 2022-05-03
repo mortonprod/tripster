@@ -8,8 +8,10 @@ const btn: HTMLButtonElement = document.querySelector('#btn');
 const sb: HTMLSelectElement = document.querySelector('#framework');
 
 chrome.storage.local.get("trip", function(data){
-  console.log(`Changes trip: ${JSON.stringify(data.trip)}`)
-  sb.value = data.trip;
+  if(Object.prototype.hasOwnProperty.call(data, 'trip')) {
+    console.log(`Changes trip: ${JSON.stringify(data.trip)}`)
+    sb.value = data.trip;
+  }
 })
 
 btn.onclick = (event) => {

@@ -44,18 +44,18 @@ function getVisibleImgs () {
 function sendBlobToIframe(iframe: HTMLIFrameElement, img: HTMLImageElement): Promise<void> {
   return new Promise((resolve) => {
     // console.log(`url: ${url}`);
-    toDataURL(img.src).then((blob)=> {
-      const _window = iframe.contentWindow
-      console.log(`iframe src: ${iframe.src}`);
-      window.addEventListener("message", function(e) {
-          if ( e.data === iframe.id.substring(0,1000) && e.origin === "null") {
-              _window.postMessage({type:'blob',blob}, "*")
-              // img.parentElement.prepend(iframe)
-              // iframe.style.cssText = dumpCSSText(img);
-              img.style.display = "none"
-              iframe.style.display = "block"
-              resolve();
-          }
+    window.addEventListener("message", function(e) {
+      toDataURL(img.src).then((blob)=> {
+        const _window = iframe.contentWindow
+        console.log(`iframe src: ${iframe.src}`);
+        if ( e.data === iframe.id.substring(0,1000) && e.origin === "null") {
+            _window.postMessage({type:'blob',blob}, "*")
+            // img.parentElement.prepend(iframe)
+            // iframe.style.cssText = dumpCSSText(img);
+            img.style.display = "none"
+            iframe.style.display = "block"
+            resolve();
+        }
       })
     })
   })
